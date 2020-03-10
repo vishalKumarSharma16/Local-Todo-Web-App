@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Todo App</title>
+
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">	
+	
+	<style>
+		#container > div{
+			cursor: pointer;
+		}
+	
+		.container-lg{
+			max-width: 360px;
+			width: 100%;
+		}
+	</style>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</head>
+<body>
+	<div class="container-lg p-3 mx-auto">
+		<form class="form-inline" id="todo-form">
+			<input type="text" id="todo" class="form-control">
+			<button class="form-control btn btn-outline-success ml-1" type="submit">add</button>
+		</form>
+		<div id="container" class="d-flex flex-column"></div>
+	</div>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/redux/3.7.2/redux.min.js"></script>
+	<script>
+		$(document).ready(function(){
+			// create a reducer for Redux
+			const reducer = Redux.combineReducers({
+				todos: (state = [], action) => {
+					const newState = Object.assign([], state);
+					if(action.type == "add"){
+						if(typeof action.item == "object"){
+							newState.push(...action.item)
+						}else if(typeof action.item == "string"){
+							newState.push(action.item)
+						}
+					}
+					if(action.type == 'remove'){
+						newState.splice(action.index, 1)
+					}
+					return newState
+				}
+			})
+
+			const store = Redux.createStore(reducer);
+
+
+			const render = () => {
+				$("#container").empty(); // sets container to empty
+				store.getState().todos.forEach((todo, i) => {
+					$("#container").append("<div class='py-1 px-2 text-weight-bold'>" + todo + "</div>")
+
+					$("#container > div").click(() => {
+						store.dispatch({
+							type: 'remove',
+							index: i,
+						})
+						render();
+					})
+				})
+			}
+
+			$("#todo-form").submit((e) => {
+				e.preventDefault();	
+				if(e.target.todo.value != ""){
+				store.dispatch({
+					type: 'add',
+					item: $("#todo").val()
+				})
+				render();
+				$("#todo").val("")
+			}
+			})
+
+			// getting previous items
+
+			$(document).ready(()=>{
+				console.log("loading")
+				store.dispatch({
+					type: 'add',
+					item: JSON.parse(localStorage.getItem('todo')).todos,
+				})
+				render();
+			})
+
+
+
+			// saving todos before closing
+			// Window.onbeforeunload( () =>{
+			// 	console.log("unloading")
+			// // 	localStorage.setItem('todos', JSON.stringify(store.getState()))
+			// // })
+			// $("body").onbeforeunload(() => {
+			// 	console.log("unloading")
+			// localStorage.setItem('todos', JSON.stringify(store.getState()))
+			// })
+			$( window ).on('unload', function( event ) {
+    			console.log('Handler for `unload` called.');
+    			localStorage.setItem('todo', JSON.stringify(store.getState()))	
+			});
+
+		})
+
+		
+	</script>
+</body>
+</html>
