@@ -55,7 +55,7 @@
 			const render = () => {
 				$("#container").empty(); // sets container to empty
 				store.getState().todos.forEach((todo, i) => {
-					$("#container").append("<div class='py-1 px-2 text-weight-bold'>" + todo + "</div>")
+					$("#container").append("<div class='py-1 px-2 font-weight-bold'>" + todo + "</div>")
 
 					$("#container > div").click(() => {
 						store.dispatch({
