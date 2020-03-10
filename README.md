@@ -6,3 +6,6 @@ You can run it in any browser
 Type in your tasks in input box and click add button
 
 Click on completed tasks to delete it.
+
+## To use it right now.
+[click here](https://vishalkumarsharma16.github.io/Local-Todo-Web-App/index.html) or https://vishalkumarsharma16.github.io/Local-Todo-Web-App/index.html
