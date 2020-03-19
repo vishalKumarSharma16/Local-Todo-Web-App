@@ -1,0 +1,31 @@
+*{
+    margin:0px;
+    padding:0px;
+
+}
+.main{
+    width:100vw;
+    height:100vh;
+
+}
+.input{
+    margin:20px;
+    padding: 20px;
+    font-size: 20px;
+    border-radius: 10px;
+    box-sizing: border-box;
+}
+.input:focus{
+    color:red;
+    border-color: blue
+}
+.submit_button{
+    padding:20px;
+    border-radius: 50%;
+
+}
+.submit_button:hover{
+   color:white;
+   background-color: #add;
+   border-color:lightblue;
+}
